@@ -1,0 +1,60 @@
+@use '@angular/material' as mat;
+@use 'sass:map';
+
+// Colors Variables
+// Primary
+$primary-base: mat.get-color-from-palette($primary);
+$primary-base-contrast: mat.get-color-from-palette($primary, default-contrast);
+$primary-lighter: mat.get-color-from-palette($primary, lighter);
+$primary-lighter-contrast: mat.get-color-from-palette($primary, lighter-contrast);
+$primary-darker: mat.get-color-from-palette($primary, darker);
+$primary-darker-contrast: mat.get-color-from-palette($primary, darker-contrast);
+
+// Accent
+$accent-base: mat.get-color-from-palette($accent);
+$accent-base-contrast: mat.get-color-from-palette($accent, default-contrast);
+$accent-lighter: mat.get-color-from-palette($accent, lighter);
+$accent-lighter-contrast: mat.get-color-from-palette($accent, lighter-contrast);
+$accent-darker: mat.get-color-from-palette($accent, darker);
+$accent-darker-contrast: mat.get-color-from-palette($accent, darker-contrast);
+
+// State Colors
+// Warning
+$warning-base: mat.get-color-from-palette($warning);
+$warning-base-contrast: mat.get-color-from-palette($warning, default-contrast);
+$warning-lighter: mat.get-color-from-palette($warning, lighter);
+$warning-lighter-contrast: mat.get-color-from-palette($warning, lighter-contrast);
+$warning-darker: mat.get-color-from-palette($warning, darker);
+$warning-darker-contrast: mat.get-color-from-palette($warning, darker-contrast);
+
+// Error
+$error-base: mat.get-color-from-palette($error);
+$error-base-contrast: mat.get-color-from-palette($error, default-contrast);
+$error-lighter: mat.get-color-from-palette($error, lighter);
+$error-lighter-contrast: mat.get-color-from-palette($error, lighter-contrast);
+$error-darker: mat.get-color-from-palette($error, darker);
+$error-darker-contrast: mat.get-color-from-palette($error, darker-contrast);
+
+// Success
+$success-base: mat.get-color-from-palette($success);
+$success-base-contrast: mat.get-color-from-palette($success, default-contrast);
+$success-lighter: mat.get-color-from-palette($success, lighter);
+$success-lighter-contrast: mat.get-color-from-palette($success, lighter-contrast);
+$success-darker: mat.get-color-from-palette($success, darker);
+$success-darker-contrast: mat.get-color-from-palette($success, darker-contrast);
+
+// Greyscale
+$greyscale-lighter: mat.get-color-from-palette($greyscale, 100);
+$greyscale-lighter-contrast: mat.get-color-from-palette($greyscale, 100-contrast);
+$greyscale-light: mat.get-color-from-palette($greyscale, lighter);
+$greyscale-light-contrast: mat.get-color-from-palette($greyscale, lighter-contrast);
+$greyscale-base: mat.get-color-from-palette($greyscale);
+$greyscale-base-contrast: mat.get-color-from-palette($greyscale, default-contrast);
+$greyscale-dark: mat.get-color-from-palette($greyscale, darker);
+$greyscale-dark-contrast: mat.get-color-from-palette($greyscale, darker-contrast);
+$greyscale-darker: mat.get-color-from-palette($greyscale, 900);
+$greyscale-darker-contrast: mat.get-color-from-palette($greyscale, 900-contrast);
+
+// Black and White
+$white: #fff;
+$black: #000;

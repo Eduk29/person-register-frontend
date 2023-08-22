@@ -1,0 +1,179 @@
+@import './mixins.theme';
+
+.primary {
+  &.base {
+    &.background {
+      @include primary('base', 'background');
+    }
+    &.text {
+      @include primary('base', 'text');
+    }
+  }
+  &.lighter {
+    &.background {
+      @include primary('lighter', 'background');
+    }
+    &.text {
+      @include primary('lighter', 'text');
+    }
+  }
+  &.darker {
+    &.background {
+      @include primary('darker', 'background');
+    }
+    &.text {
+      @include primary('darker', 'text');
+    }
+  }
+}
+
+.accent {
+  &.base {
+    &.background {
+      @include accent('base', 'background');
+    }
+    &.text {
+      @include accent('base', 'text');
+    }
+  }
+  &.lighter {
+    &.background {
+      @include accent('lighter', 'background');
+    }
+    &.text {
+      @include accent('lighter', 'text');
+    }
+  }
+  &.darker {
+    &.background {
+      @include accent('darker', 'background');
+    }
+    &.text {
+      @include accent('darker', 'text');
+    }
+  }
+}
+
+.success {
+  &.base {
+    &.background {
+      @include success('base', 'background');
+    }
+    &.text {
+      @include success('base', 'text');
+    }
+  }
+  &.lighter {
+    &.background {
+      @include success('lighter', 'background');
+    }
+    &.text {
+      @include success('lighter', 'text');
+    }
+  }
+  &.darker {
+    &.background {
+      @include success('darker', 'background');
+    }
+    &.text {
+      @include success('darker', 'text');
+    }
+  }
+}
+
+.warning {
+  &.base {
+    &.background {
+      @include warning('base', 'background');
+    }
+    &.text {
+      @include warning('base', 'text');
+    }
+  }
+  &.lighter {
+    &.background {
+      @include warning('lighter', 'background');
+    }
+    &.text {
+      @include warning('lighter', 'text');
+    }
+  }
+  &.darker {
+    &.background {
+      @include warning('darker', 'background');
+    }
+    &.text {
+      @include warning('darker', 'text');
+    }
+  }
+}
+
+.error {
+  &.base {
+    &.background {
+      @include error('base', 'background');
+    }
+    &.text {
+      @include error('base', 'text');
+    }
+  }
+  &.lighter {
+    &.background {
+      @include error('lighter', 'background');
+    }
+    &.text {
+      @include error('lighter', 'text');
+    }
+  }
+  &.darker {
+    &.background {
+      @include error('darker', 'background');
+    }
+    &.text {
+      @include error('darker', 'text');
+    }
+  }
+}
+
+.greyscale {
+  &.lighter {
+    &.background {
+      @include greyscale('lighter', 'background');
+    }
+    &.text {
+      @include greyscale('lighter', 'text');
+    }
+  }
+  &.light {
+    &.background {
+      @include greyscale('light', 'background');
+    }
+    &.text {
+      @include greyscale('light', 'text');
+    }
+  }
+  &.base {
+    &.background {
+      @include greyscale('base', 'background');
+    }
+    &.text {
+      @include greyscale('base', 'text');
+    }
+  }
+  &.dark {
+    &.background {
+      @include greyscale('dark', 'background');
+    }
+    &.text {
+      @include greyscale('dark', 'text');
+    }
+  }
+  &.darker {
+    &.background {
+      @include greyscale('darker', 'background');
+    }
+    &.text {
+      @include greyscale('darker', 'text');
+    }
+  }
+}
