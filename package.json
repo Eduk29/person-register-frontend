@@ -10,9 +10,9 @@
     "prettier:fix": "npx prettier src/**/*.{js,jsx,ts,tsx,html,css,scss} --write",
     "prepare": "husky install",
     "release": "standard-version",
+    "release:major": "standard-version --release-as major",
     "release:minor": "standard-version --release-as minor",
     "release:patch": "standard-version --release-as patch",
-    "release:major": "standard-version --release-as major",
     "start": "ng serve",
     "test": "ng test --no-watch --browsers=ChromeHeadless --code-coverage",
     "watch": "ng build --watch --configuration development"
