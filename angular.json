@@ -13,7 +13,7 @@
       "schematics": {},
       "root": "",
       "sourceRoot": "src",
-      "prefix": "app",
+      "prefix": "edv",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
