@@ -1,0 +1,24 @@
+<mat-card id="card-base-search-input" class="d-flex flex-row align-items-center">
+  <form [formGroup]="searchForm" class="w-100">
+    <mat-card-content class="d-flex flex-row align-items-center">
+      <mat-form-field appearance="outline" class="hide-hint me-2 w-20">
+        <mat-select formControlName="searchMode" placeholder="Search by...">
+          <mat-option *ngFor="let searchModeOption of searchModeOptionList" [value]="searchModeOption?.value">{{
+            searchModeOption?.key
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="hide-hint mx-2 w-80" appearance="outline">
+        <input matInput formControlName="searchQuery" />
+      </mat-form-field>
+
+      <button id="search-button" [disabled]="disableButton" (click)="search()" mat-raised-button color="accent" class="w-15 ms-2 h-100">
+        <div class="d-flex flex-row align-items-center">
+          <mat-icon>search</mat-icon>
+          <p class="mat-subtitle-1 py-2 m-0">Search</p>
+        </div>
+      </button>
+    </mat-card-content>
+  </form>
+</mat-card>

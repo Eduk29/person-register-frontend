@@ -15,6 +15,7 @@
     "release:patch": "standard-version --release-as patch",
     "start": "ng serve",
     "test": "ng test --no-watch --browsers=ChromeHeadless --code-coverage",
+    "test:watch": "ng test --watch --browsers=ChromeHeadless --code-coverage",
     "watch": "ng build --watch --configuration development"
   },
   "private": true,
