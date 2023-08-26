@@ -1,13 +1,90 @@
-import { Component } from '@angular/core';
-import { ISearchFilter } from 'src/app/shared/models/search-filter.model';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subject, takeUntil, tap } from 'rxjs';
+
+import { IPerson } from './../../person/models/person.model';
+import { PersonService } from './../../person/services/person.service';
+import { IPaginatedResponse } from './../../shared/models/paginated-response.model';
+import { IPaginationParameters } from './../../shared/models/pagination-parameters.model';
+import { ISearchFilter } from './../../shared/models/search-filter.model';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'edv-home-page',
   templateUrl: './home-page.component.html',
   styleUrls: ['./home-page.component.scss'],
 })
-export class HomePageComponent {
+export class HomePageComponent implements OnDestroy, OnInit {
+  public paginationParameters: IPaginationParameters = {};
+  public personList!: IPerson[];
+
+  private onDestroy$: Subject<void> = new Subject<void>();
+
+  constructor(private readonly personService: PersonService) {
+    this.configurePagination();
+  }
+
+  ngOnInit(): void {
+    this.listAllPersons();
+  }
+
+  ngOnDestroy(): void {
+    this.onDestroy$.next();
+    this.onDestroy$.unsubscribe();
+  }
+
+  public paginationEvent(page: PageEvent): void {
+    this.configurePagination(page.pageIndex, page.pageSize);
+    this.listAllPersons();
+  }
+
   public search(filter: ISearchFilter): void {
-    console.log('Filter: ', filter);
+    this.listByParameters(filter);
+  }
+
+  private configurePagination(pageIndex?: number, pageSize?: number, pageSizeOptions?: number[], totalCount?: number): void {
+    this.paginationParameters.pageIndex = pageIndex || 0;
+    this.paginationParameters.pageSize = pageSize || 10;
+    this.paginationParameters.pageSizeOptions = pageSizeOptions || [1, 5, 10, 50, 100];
+    this.paginationParameters.totalCount = totalCount || 0;
+  }
+
+  private listAllPersons(): void {
+    this.personService
+      .listAll(this.paginationParameters)
+      .pipe(
+        tap((response: IPaginatedResponse<IPerson>) => {
+          if (response.content) {
+            this.personList = response.content;
+            this.paginationParameters = {
+              ...this.paginationParameters,
+              pageIndex: response.pageNumber,
+              pageSize: response.pageSize,
+              totalCount: response.totalElements,
+            };
+          }
+        }),
+        takeUntil(this.onDestroy$)
+      )
+      .subscribe();
+  }
+
+  private listByParameters(searchParameters: ISearchFilter): void {
+    this.personService
+      .listByParameter(this.paginationParameters, searchParameters)
+      .pipe(
+        tap((response: IPaginatedResponse<IPerson>) => {
+          if (response.content) {
+            this.personList = response.content;
+            this.paginationParameters = {
+              ...this.paginationParameters,
+              pageIndex: response.pageNumber,
+              pageSize: response.pageSize,
+              totalCount: response.totalElements,
+            };
+          }
+        }),
+        takeUntil(this.onDestroy$)
+      )
+      .subscribe();
   }
 }
