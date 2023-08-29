@@ -1,0 +1,11 @@
+<div id="feedback-messages" class="d-flex flex-column align-items-center">
+  <div *ngIf="displayTitle" class="d-flex flex-row w-100">
+    <mat-icon *ngIf="displayIcon && !!iconName" [fontIcon]="iconName"></mat-icon>
+    <p class="m-0">{{ title }}</p>
+  </div>
+
+  <div *ngIf="!!message" class="d-flex flex-row w-100">
+    <mat-icon *ngIf="!displayTitle && displayIcon && !!iconName" [fontIcon]="iconName" class="pe-3"></mat-icon>
+    <p *ngIf="!!message" class="ps-3 m-0">{{ message }}</p>
+  </div>
+</div>

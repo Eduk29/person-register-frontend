@@ -1,12 +1,14 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { PageEvent } from '@angular/material/paginator';
 import { Subject, takeUntil, tap } from 'rxjs';
 
 import { IPerson } from './../../person/models/person.model';
 import { PersonService } from './../../person/services/person.service';
+import { FeedbackMessageService } from './../../shared/components/feedback-messages/services/feedback-message.service';
 import { IPaginatedResponse } from './../../shared/models/paginated-response.model';
 import { IPaginationParameters } from './../../shared/models/pagination-parameters.model';
 import { ISearchFilter } from './../../shared/models/search-filter.model';
-import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'edv-home-page',
@@ -19,7 +21,10 @@ export class HomePageComponent implements OnDestroy, OnInit {
 
   private onDestroy$: Subject<void> = new Subject<void>();
 
-  constructor(private readonly personService: PersonService) {
+  constructor(
+    private readonly feedbackMessageService: FeedbackMessageService,
+    private readonly personService: PersonService
+  ) {
     this.configurePagination();
   }
 
@@ -48,24 +53,36 @@ export class HomePageComponent implements OnDestroy, OnInit {
     this.paginationParameters.totalCount = totalCount || 0;
   }
 
+  private constructPaginatedResponse(response: IPaginatedResponse<IPerson>): void {
+    this.personList = response.content ? response.content : [];
+    this.paginationParameters = {
+      ...this.paginationParameters,
+      pageIndex: response.pageNumber,
+      pageSize: response.pageSize,
+      totalCount: response.totalElements,
+    };
+  }
+
+  private displayFeedbackMessage(): void {
+    this.feedbackMessageService.displayAPIErrorFeedbackMessage();
+  }
+
   private listAllPersons(): void {
     this.personService
       .listAll(this.paginationParameters)
       .pipe(
         tap((response: IPaginatedResponse<IPerson>) => {
-          if (response.content) {
-            this.personList = response.content;
-            this.paginationParameters = {
-              ...this.paginationParameters,
-              pageIndex: response.pageNumber,
-              pageSize: response.pageSize,
-              totalCount: response.totalElements,
-            };
-          }
+          this.constructPaginatedResponse(response);
         }),
         takeUntil(this.onDestroy$)
       )
-      .subscribe();
+      .subscribe({
+        error: (error: HttpErrorResponse) => {
+          if (error.status === 0) {
+            this.displayFeedbackMessage();
+          }
+        },
+      });
   }
 
   private listByParameters(searchParameters: ISearchFilter): void {
@@ -73,18 +90,16 @@ export class HomePageComponent implements OnDestroy, OnInit {
       .listByParameter(this.paginationParameters, searchParameters)
       .pipe(
         tap((response: IPaginatedResponse<IPerson>) => {
-          if (response.content) {
-            this.personList = response.content;
-            this.paginationParameters = {
-              ...this.paginationParameters,
-              pageIndex: response.pageNumber,
-              pageSize: response.pageSize,
-              totalCount: response.totalElements,
-            };
-          }
+          this.constructPaginatedResponse(response);
         }),
         takeUntil(this.onDestroy$)
       )
-      .subscribe();
+      .subscribe({
+        error: (error: HttpErrorResponse) => {
+          if (error.status === 0) {
+            this.displayFeedbackMessage();
+          }
+        },
+      });
   }
 }

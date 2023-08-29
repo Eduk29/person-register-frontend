@@ -1,8 +1,9 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PageEvent } from '@angular/material/paginator';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 
 import { PersonService } from './../../person/services/person.service';
 import { DataTableModule } from './../../shared/components/data-table/data-table.module';
@@ -10,21 +11,26 @@ import { SearchInputModule } from './../../shared/components/search-input/search
 import { PAGINATED_PERSON_LIST } from './../../shared/mocks/paginated-person-list.mock';
 import { ISearchFilter } from './../../shared/models/search-filter.model';
 import { HomePageComponent } from './home-page.component';
+import { FeedbackMessageService } from 'src/app/shared/components/feedback-messages/services/feedback-message.service';
+import { FeedbackMessagesComponent } from 'src/app/shared/components/feedback-messages/feedback-messages.component';
+import { MatIconModule } from '@angular/material/icon';
 
 describe('HomePageComponent', () => {
   let component: HomePageComponent;
   let fixture: ComponentFixture<HomePageComponent>;
-  let service: PersonService;
+  let personService: PersonService;
+  let feedbackMessagesService: FeedbackMessageService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [HomePageComponent],
-      imports: [BrowserAnimationsModule, DataTableModule, HttpClientModule, SearchInputModule],
-      providers: [PersonService],
+      declarations: [HomePageComponent, FeedbackMessagesComponent],
+      imports: [BrowserAnimationsModule, DataTableModule, HttpClientModule, MatIconModule, MatSnackBarModule, SearchInputModule],
+      providers: [PersonService, FeedbackMessageService],
     }).compileComponents();
 
     fixture = TestBed.createComponent(HomePageComponent);
-    service = TestBed.inject(PersonService);
+    personService = TestBed.inject(PersonService);
+    feedbackMessagesService = TestBed.inject(FeedbackMessageService);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -101,21 +107,21 @@ describe('HomePageComponent', () => {
   });
 
   it('listAllPersons should call service when called', () => {
-    spyOn(service, 'listAll').and.returnValue(of(PAGINATED_PERSON_LIST));
+    spyOn(personService, 'listAll').and.returnValue(of(PAGINATED_PERSON_LIST));
     component['listAllPersons']();
 
-    expect(service['listAll']).toHaveBeenCalled();
+    expect(personService['listAll']).toHaveBeenCalled();
   });
 
   it('listAllPersons should set personList when service returns', () => {
-    spyOn(service, 'listAll').and.returnValue(of(PAGINATED_PERSON_LIST));
+    spyOn(personService, 'listAll').and.returnValue(of(PAGINATED_PERSON_LIST));
     component['listAllPersons']();
 
     expect(component.personList.length).toBe(8);
   });
 
   it('listAllPersons should set pagination parameters when service returns', () => {
-    spyOn(service, 'listAll').and.returnValue(of(PAGINATED_PERSON_LIST));
+    spyOn(personService, 'listAll').and.returnValue(of(PAGINATED_PERSON_LIST));
     component['listAllPersons']();
 
     expect(component.paginationParameters.pageIndex).toBe(999);
@@ -124,16 +130,16 @@ describe('HomePageComponent', () => {
   });
 
   it('listByParameters should call service when called', () => {
-    spyOn(service, 'listByParameter').and.returnValue(of(PAGINATED_PERSON_LIST));
+    spyOn(personService, 'listByParameter').and.returnValue(of(PAGINATED_PERSON_LIST));
     const fakeFilter: ISearchFilter = { searchMode: { key: 'id', value: 'id' }, searchQuery: '1' };
 
     component['listByParameters'](fakeFilter);
 
-    expect(service['listByParameter']).toHaveBeenCalled();
+    expect(personService['listByParameter']).toHaveBeenCalled();
   });
 
   it('listByParameters should set personList when service returns', () => {
-    spyOn(service, 'listByParameter').and.returnValue(of(PAGINATED_PERSON_LIST));
+    spyOn(personService, 'listByParameter').and.returnValue(of(PAGINATED_PERSON_LIST));
     const fakeFilter: ISearchFilter = { searchMode: { key: 'id', value: 'id' }, searchQuery: '1' };
 
     component['listByParameters'](fakeFilter);
@@ -142,7 +148,7 @@ describe('HomePageComponent', () => {
   });
 
   it('listByParameters should set pagination parameters when service returns', () => {
-    spyOn(service, 'listByParameter').and.returnValue(of(PAGINATED_PERSON_LIST));
+    spyOn(personService, 'listByParameter').and.returnValue(of(PAGINATED_PERSON_LIST));
     const fakeFilter: ISearchFilter = { searchMode: { key: 'id', value: 'id' }, searchQuery: '1' };
 
     component['listByParameters'](fakeFilter);
@@ -150,5 +156,50 @@ describe('HomePageComponent', () => {
     expect(component.paginationParameters.pageIndex).toBe(999);
     expect(component.paginationParameters.pageSize).toBe(1);
     expect(component.paginationParameters.totalCount).toBe(999);
+  });
+
+  it('constructPagignatedResponse should extract person list from response', () => {
+    const fakeResponse = PAGINATED_PERSON_LIST;
+
+    component['constructPaginatedResponse'](fakeResponse);
+
+    expect(component.personList.length).toEqual(fakeResponse.content?.length as number);
+  });
+
+  it('constructPagignatedResponse should return person list length as 0 when response content is undefined', () => {
+    const fakePaginatedResponse = { ...PAGINATED_PERSON_LIST };
+    fakePaginatedResponse.content = undefined;
+    const fakeResponse = fakePaginatedResponse;
+
+    component['constructPaginatedResponse'](fakeResponse);
+
+    expect(component.personList.length).toEqual(0);
+  });
+
+  it('displayFeedbackMessage should call feedbackMessageService to display a error message', () => {
+    spyOn(feedbackMessagesService, 'displayAPIErrorFeedbackMessage').and.callThrough();
+
+    component['displayFeedbackMessage']();
+
+    expect(feedbackMessagesService.displayAPIErrorFeedbackMessage).toHaveBeenCalled();
+  });
+
+  it('listAllPersons should call feedbackMessageService to display a error message when api return some error', () => {
+    spyOn(personService, 'listAll').and.returnValue(throwError(() => new HttpErrorResponse({ status: 0 })));
+    const spyDisplayFeedbackMessages = spyOn<any>(component, 'displayFeedbackMessage').and.callThrough();
+
+    component['listAllPersons']();
+
+    expect(spyDisplayFeedbackMessages).toHaveBeenCalled();
+  });
+
+  it('listByParameters should call feedbackMessageService to display a error message when api return some error', () => {
+    spyOn(personService, 'listByParameter').and.returnValue(throwError(() => new HttpErrorResponse({ status: 0 })));
+    const spyDisplayFeedbackMessages = spyOn<any>(component, 'displayFeedbackMessage').and.callThrough();
+    const fakeFilter: ISearchFilter = { searchMode: { key: 'id', value: 'id' }, searchQuery: '1' };
+
+    component['listByParameters'](fakeFilter);
+
+    expect(spyDisplayFeedbackMessages).toHaveBeenCalled();
   });
 });
