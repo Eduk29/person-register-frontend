@@ -1,9 +1,15 @@
 import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatIconModule } from '@angular/material/icon';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { of, throwError } from 'rxjs';
+import { FeedbackMessagesComponent } from 'src/app/shared/components/feedback-messages/feedback-messages.component';
+import { FeedbackMessageService } from 'src/app/shared/components/feedback-messages/services/feedback-message.service';
+import { TableActionsService } from 'src/app/shared/components/table-actions/services/table-actions.service';
+import { TableActionTypesEnum } from 'src/app/shared/enums/table-action-type.enum';
+import { ITableAction } from 'src/app/shared/models/table-action.model';
 
 import { PersonService } from './../../person/services/person.service';
 import { DataTableModule } from './../../shared/components/data-table/data-table.module';
@@ -11,27 +17,26 @@ import { SearchInputModule } from './../../shared/components/search-input/search
 import { PAGINATED_PERSON_LIST } from './../../shared/mocks/paginated-person-list.mock';
 import { ISearchFilter } from './../../shared/models/search-filter.model';
 import { HomePageComponent } from './home-page.component';
-import { FeedbackMessageService } from 'src/app/shared/components/feedback-messages/services/feedback-message.service';
-import { FeedbackMessagesComponent } from 'src/app/shared/components/feedback-messages/feedback-messages.component';
-import { MatIconModule } from '@angular/material/icon';
 
 describe('HomePageComponent', () => {
   let component: HomePageComponent;
   let fixture: ComponentFixture<HomePageComponent>;
   let personService: PersonService;
   let feedbackMessagesService: FeedbackMessageService;
+  let tableActionService: TableActionsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [HomePageComponent, FeedbackMessagesComponent],
       imports: [BrowserAnimationsModule, DataTableModule, HttpClientModule, MatIconModule, MatSnackBarModule, SearchInputModule],
-      providers: [PersonService, FeedbackMessageService],
+      providers: [FeedbackMessageService, PersonService, TableActionsService],
     }).compileComponents();
 
     fixture = TestBed.createComponent(HomePageComponent);
-    personService = TestBed.inject(PersonService);
-    feedbackMessagesService = TestBed.inject(FeedbackMessageService);
     component = fixture.componentInstance;
+    feedbackMessagesService = TestBed.inject(FeedbackMessageService);
+    personService = TestBed.inject(PersonService);
+    tableActionService = TestBed.inject(TableActionsService);
     fixture.detectChanges();
   });
 
@@ -201,5 +206,17 @@ describe('HomePageComponent', () => {
     component['listByParameters'](fakeFilter);
 
     expect(spyDisplayFeedbackMessages).toHaveBeenCalled();
+  });
+
+  it('catchTableActionEvent should catch table action event when table action is dispatched', () => {
+    const fakeAction: ITableAction = {
+      dataId: 999,
+      actionType: TableActionTypesEnum.DETAIL,
+    };
+    spyOn<any>(HomePageComponent.prototype, 'catchTableActionEvent').and.callThrough();
+    new HomePageComponent(feedbackMessagesService, personService, tableActionService);
+    tableActionService.dispatchTableAction(fakeAction);
+
+    expect(HomePageComponent.prototype['catchTableActionEvent']).toHaveBeenCalled();
   });
 });

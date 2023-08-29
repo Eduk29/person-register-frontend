@@ -6,9 +6,11 @@ import { Subject, takeUntil, tap } from 'rxjs';
 import { IPerson } from './../../person/models/person.model';
 import { PersonService } from './../../person/services/person.service';
 import { FeedbackMessageService } from './../../shared/components/feedback-messages/services/feedback-message.service';
+import { TableActionsService } from './../../shared/components/table-actions/services/table-actions.service';
 import { IPaginatedResponse } from './../../shared/models/paginated-response.model';
 import { IPaginationParameters } from './../../shared/models/pagination-parameters.model';
 import { ISearchFilter } from './../../shared/models/search-filter.model';
+import { ITableAction } from './../../shared/models/table-action.model';
 
 @Component({
   selector: 'edv-home-page',
@@ -23,8 +25,10 @@ export class HomePageComponent implements OnDestroy, OnInit {
 
   constructor(
     private readonly feedbackMessageService: FeedbackMessageService,
-    private readonly personService: PersonService
+    private readonly personService: PersonService,
+    private readonly tableActionsService: TableActionsService
   ) {
+    this.catchTableActionEvent();
     this.configurePagination();
   }
 
@@ -44,6 +48,15 @@ export class HomePageComponent implements OnDestroy, OnInit {
 
   public search(filter: ISearchFilter): void {
     this.listByParameters(filter);
+  }
+
+  private catchTableActionEvent(): void {
+    this.tableActionsService
+      .getActionObservable()
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe((action: ITableAction) => {
+        console.log('Action: ', action);
+      });
   }
 
   private configurePagination(pageIndex?: number, pageSize?: number, pageSizeOptions?: number[], totalCount?: number): void {
