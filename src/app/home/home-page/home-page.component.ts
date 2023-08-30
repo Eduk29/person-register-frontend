@@ -1,7 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
+import { Router } from '@angular/router';
 import { Subject, takeUntil, tap } from 'rxjs';
+import { TableActionTypesEnum } from 'src/app/shared/enums/table-action-type.enum';
 
 import { IPerson } from './../../person/models/person.model';
 import { PersonService } from './../../person/services/person.service';
@@ -26,6 +28,7 @@ export class HomePageComponent implements OnDestroy, OnInit {
   constructor(
     private readonly feedbackMessageService: FeedbackMessageService,
     private readonly personService: PersonService,
+    private readonly router: Router,
     private readonly tableActionsService: TableActionsService
   ) {
     this.catchTableActionEvent();
@@ -55,7 +58,12 @@ export class HomePageComponent implements OnDestroy, OnInit {
       .getActionObservable()
       .pipe(takeUntil(this.onDestroy$))
       .subscribe((action: ITableAction) => {
-        console.log('Action: ', action);
+        if (action.dataId && action.actionType === TableActionTypesEnum.DETAIL) {
+          this.redirectToDetailsPage(action.dataId);
+        }
+        if (action.dataId && action.actionType === TableActionTypesEnum.EDIT) {
+          this.redirectToEditionPage(action.dataId);
+        }
       });
   }
 
@@ -114,5 +122,13 @@ export class HomePageComponent implements OnDestroy, OnInit {
           }
         },
       });
+  }
+
+  private redirectToDetailsPage(personId: number): void {
+    this.router.navigate(['..', 'person', personId]);
+  }
+
+  private redirectToEditionPage(personId: number): void {
+    this.router.navigate(['..', 'person', personId, 'edit']);
   }
 }
