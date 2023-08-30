@@ -1,0 +1,11 @@
+<mat-card>
+  <nav *ngIf="!!displayBreadcrumbs" aria-label="breadcrumb" class="breadcrumbs-nav py-2 px-3">
+    <ol class="breadcrumb m-0">
+      <li *ngFor="let breadcrumbItem of breadcrumbsList" class="breadcrumb-item">
+        <a [routerLink]="breadcrumbItem.routerLink" routerLinkActive="router-link-active">
+          {{ breadcrumbItem.name }}
+        </a>
+      </li>
+    </ol>
+  </nav>
+</mat-card>

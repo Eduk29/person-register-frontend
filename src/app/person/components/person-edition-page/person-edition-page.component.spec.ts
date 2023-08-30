@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
+import { BreadcrumbsModule } from './../../../shared/components/breadcrumbs/breadcrumbs.module';
 import { PersonEditionPageComponent } from './person-edition-page.component';
 
 describe('PersonEditionPageComponent', () => {
@@ -9,6 +11,7 @@ describe('PersonEditionPageComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [PersonEditionPageComponent],
+      imports: [BreadcrumbsModule, RouterTestingModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(PersonEditionPageComponent);
