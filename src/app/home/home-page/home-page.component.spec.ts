@@ -4,7 +4,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { of, throwError } from 'rxjs';
+import { APP_BASE_ROUTES } from 'src/app/app.routes';
 import { FeedbackMessagesComponent } from 'src/app/shared/components/feedback-messages/feedback-messages.component';
 import { FeedbackMessageService } from 'src/app/shared/components/feedback-messages/services/feedback-message.service';
 import { TableActionsService } from 'src/app/shared/components/table-actions/services/table-actions.service';
@@ -21,14 +24,23 @@ import { HomePageComponent } from './home-page.component';
 describe('HomePageComponent', () => {
   let component: HomePageComponent;
   let fixture: ComponentFixture<HomePageComponent>;
-  let personService: PersonService;
   let feedbackMessagesService: FeedbackMessageService;
+  let personService: PersonService;
   let tableActionService: TableActionsService;
+  let router: Router;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [HomePageComponent, FeedbackMessagesComponent],
-      imports: [BrowserAnimationsModule, DataTableModule, HttpClientModule, MatIconModule, MatSnackBarModule, SearchInputModule],
+      imports: [
+        BrowserAnimationsModule,
+        DataTableModule,
+        HttpClientModule,
+        MatIconModule,
+        MatSnackBarModule,
+        RouterTestingModule.withRoutes(APP_BASE_ROUTES),
+        SearchInputModule,
+      ],
       providers: [FeedbackMessageService, PersonService, TableActionsService],
     }).compileComponents();
 
@@ -36,6 +48,7 @@ describe('HomePageComponent', () => {
     component = fixture.componentInstance;
     feedbackMessagesService = TestBed.inject(FeedbackMessageService);
     personService = TestBed.inject(PersonService);
+    router = TestBed.get(Router);
     tableActionService = TestBed.inject(TableActionsService);
     fixture.detectChanges();
   });
@@ -208,15 +221,55 @@ describe('HomePageComponent', () => {
     expect(spyDisplayFeedbackMessages).toHaveBeenCalled();
   });
 
-  it('catchTableActionEvent should catch table action event when table action is dispatched', () => {
+  it('catchTableActionEvent should catch table action event when detail table action is dispatched', () => {
     const fakeAction: ITableAction = {
       dataId: 999,
       actionType: TableActionTypesEnum.DETAIL,
     };
-    spyOn<any>(HomePageComponent.prototype, 'catchTableActionEvent').and.callThrough();
-    new HomePageComponent(feedbackMessagesService, personService, tableActionService);
+    spyOn<any>(HomePageComponent.prototype, 'catchTableActionEvent').and.callFake(() => {});
+    spyOn<any>(component, 'redirectToDetailsPage').and.callFake(() => {});
+    new HomePageComponent(feedbackMessagesService, personService, router, tableActionService);
     tableActionService.dispatchTableAction(fakeAction);
 
     expect(HomePageComponent.prototype['catchTableActionEvent']).toHaveBeenCalled();
+  });
+
+  it('catchTableActionEvent should catch table action event when edition table action is dispatched', () => {
+    const fakeAction: ITableAction = {
+      dataId: 999,
+      actionType: TableActionTypesEnum.EDIT,
+    };
+    spyOn<any>(HomePageComponent.prototype, 'catchTableActionEvent').and.callFake(() => {});
+    spyOn<any>(component, 'redirectToEditionPage').and.callFake(() => {});
+    new HomePageComponent(feedbackMessagesService, personService, router, tableActionService);
+    tableActionService.dispatchTableAction(fakeAction);
+
+    expect(HomePageComponent.prototype['catchTableActionEvent']).toHaveBeenCalled();
+  });
+
+  it('redirectToDetailPage should call navigate from router when table action is dispatched', () => {
+    spyOn<any>(component['router'], 'navigate').and.callFake(() => {});
+
+    component['redirectToDetailsPage'](1);
+    component['redirectToEditionPage'](1);
+
+    expect(component['router'].navigate).toHaveBeenCalled();
+    expect(component['router'].navigate).toHaveBeenCalled();
+  });
+
+  it('redirectToDetailPage should call navigate to detail page when edition table action is dispatched', () => {
+    spyOn<any>(component['router'], 'navigate').and.callFake(() => {});
+
+    component['redirectToDetailsPage'](1);
+
+    expect(component['router'].navigate).toHaveBeenCalledWith(['..', 'person', 1]);
+  });
+
+  it('redirectToDetailPage should call navigate to edition page when edition table action is dispatched', () => {
+    spyOn<any>(component['router'], 'navigate').and.callFake(() => {});
+
+    component['redirectToEditionPage'](1);
+
+    expect(component['router'].navigate).toHaveBeenCalledWith(['..', 'person', 1, 'edit']);
   });
 });
