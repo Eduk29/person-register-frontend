@@ -90,7 +90,7 @@ export class HomePageComponent implements OnDestroy, OnInit {
 
   private listAllPersons(): void {
     this.personService
-      .listAll(this.paginationParameters)
+      .getAll(this.paginationParameters)
       .pipe(
         tap((response: IPaginatedResponse<IPerson>) => {
           this.constructPaginatedResponse(response);
@@ -108,7 +108,7 @@ export class HomePageComponent implements OnDestroy, OnInit {
 
   private listByParameters(searchParameters: ISearchFilter): void {
     this.personService
-      .listByParameter(this.paginationParameters, searchParameters)
+      .getByParameter(this.paginationParameters, searchParameters)
       .pipe(
         tap((response: IPaginatedResponse<IPerson>) => {
           this.constructPaginatedResponse(response);

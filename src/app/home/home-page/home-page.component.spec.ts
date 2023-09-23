@@ -125,21 +125,21 @@ describe('HomePageComponent', () => {
   });
 
   it('listAllPersons should call service when called', () => {
-    spyOn(personService, 'listAll').and.returnValue(of(PAGINATED_PERSON_LIST));
+    spyOn(personService, 'getAll').and.returnValue(of(PAGINATED_PERSON_LIST));
     component['listAllPersons']();
 
-    expect(personService['listAll']).toHaveBeenCalled();
+    expect(personService['getAll']).toHaveBeenCalled();
   });
 
   it('listAllPersons should set personList when service returns', () => {
-    spyOn(personService, 'listAll').and.returnValue(of(PAGINATED_PERSON_LIST));
+    spyOn(personService, 'getAll').and.returnValue(of(PAGINATED_PERSON_LIST));
     component['listAllPersons']();
 
     expect(component.personList.length).toBe(8);
   });
 
   it('listAllPersons should set pagination parameters when service returns', () => {
-    spyOn(personService, 'listAll').and.returnValue(of(PAGINATED_PERSON_LIST));
+    spyOn(personService, 'getAll').and.returnValue(of(PAGINATED_PERSON_LIST));
     component['listAllPersons']();
 
     expect(component.paginationParameters.pageIndex).toBe(999);
@@ -148,16 +148,16 @@ describe('HomePageComponent', () => {
   });
 
   it('listByParameters should call service when called', () => {
-    spyOn(personService, 'listByParameter').and.returnValue(of(PAGINATED_PERSON_LIST));
+    spyOn(personService, 'getByParameter').and.returnValue(of(PAGINATED_PERSON_LIST));
     const fakeFilter: ISearchFilter = { searchMode: { key: 'id', value: 'id' }, searchQuery: '1' };
 
     component['listByParameters'](fakeFilter);
 
-    expect(personService['listByParameter']).toHaveBeenCalled();
+    expect(personService['getByParameter']).toHaveBeenCalled();
   });
 
   it('listByParameters should set personList when service returns', () => {
-    spyOn(personService, 'listByParameter').and.returnValue(of(PAGINATED_PERSON_LIST));
+    spyOn(personService, 'getByParameter').and.returnValue(of(PAGINATED_PERSON_LIST));
     const fakeFilter: ISearchFilter = { searchMode: { key: 'id', value: 'id' }, searchQuery: '1' };
 
     component['listByParameters'](fakeFilter);
@@ -166,7 +166,7 @@ describe('HomePageComponent', () => {
   });
 
   it('listByParameters should set pagination parameters when service returns', () => {
-    spyOn(personService, 'listByParameter').and.returnValue(of(PAGINATED_PERSON_LIST));
+    spyOn(personService, 'getByParameter').and.returnValue(of(PAGINATED_PERSON_LIST));
     const fakeFilter: ISearchFilter = { searchMode: { key: 'id', value: 'id' }, searchQuery: '1' };
 
     component['listByParameters'](fakeFilter);
@@ -203,7 +203,7 @@ describe('HomePageComponent', () => {
   });
 
   it('listAllPersons should call feedbackMessageService to display a error message when api return some error', () => {
-    spyOn(personService, 'listAll').and.returnValue(throwError(() => new HttpErrorResponse({ status: 0 })));
+    spyOn(personService, 'getAll').and.returnValue(throwError(() => new HttpErrorResponse({ status: 0 })));
     const spyDisplayFeedbackMessages = spyOn<any>(component, 'displayFeedbackMessage').and.callThrough();
 
     component['listAllPersons']();
@@ -212,7 +212,7 @@ describe('HomePageComponent', () => {
   });
 
   it('listByParameters should call feedbackMessageService to display a error message when api return some error', () => {
-    spyOn(personService, 'listByParameter').and.returnValue(throwError(() => new HttpErrorResponse({ status: 0 })));
+    spyOn(personService, 'getByParameter').and.returnValue(throwError(() => new HttpErrorResponse({ status: 0 })));
     const spyDisplayFeedbackMessages = spyOn<any>(component, 'displayFeedbackMessage').and.callThrough();
     const fakeFilter: ISearchFilter = { searchMode: { key: 'id', value: 'id' }, searchQuery: '1' };
 
