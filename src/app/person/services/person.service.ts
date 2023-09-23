@@ -15,7 +15,7 @@ import ServicesUtils from './../../shared/utils/service.utils';
 export class PersonService {
   constructor(private readonly httpClient: HttpClient) {}
 
-  public listAll(paginationParameters: IPaginationParameters): Observable<IPaginatedResponse<IPerson>> {
+  public getAll(paginationParameters: IPaginationParameters): Observable<IPaginatedResponse<IPerson>> {
     const endpointBasePath = environment.personsEndpoints.listAll;
     const requestParameters = ServicesUtils.constructRequestParameters(paginationParameters);
     const endpointUrl = `${endpointBasePath}?${requestParameters}`;
@@ -23,13 +23,17 @@ export class PersonService {
     return this.httpClient.get<IPaginatedResponse<IPerson>>(endpointUrl);
   }
 
-  public listByParameter(
-    paginationParameters: IPaginationParameters,
-    searchFilter: ISearchFilter
-  ): Observable<IPaginatedResponse<IPerson>> {
+  public getByParameter(paginationParameters: IPaginationParameters, searchFilter: ISearchFilter): Observable<IPaginatedResponse<IPerson>> {
     const endpointBasePath = environment.personsEndpoints.listByParameter;
     const requestParameters = ServicesUtils.constructRequestParameters(paginationParameters, searchFilter);
     const endpointUrl = `${endpointBasePath}?${requestParameters}`;
+
+    return this.httpClient.get<IPaginatedResponse<IPerson>>(endpointUrl);
+  }
+
+  public getPersonById(personId: number): Observable<IPaginatedResponse<IPerson>> {
+    const endpointBasePath = environment.personsEndpoints.listAll;
+    const endpointUrl = `${endpointBasePath}/${personId}`;
 
     return this.httpClient.get<IPaginatedResponse<IPerson>>(endpointUrl);
   }
