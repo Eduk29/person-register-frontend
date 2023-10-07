@@ -1,6 +1,6 @@
 import { IBreadcrumbItem } from '../models/breadcrumb-item.model';
 
-export const personEditionBreadcrumbs: IBreadcrumbItem[] = [
+export const PersonEditionBreadcrumbsConfiguration: IBreadcrumbItem[] = [
   {
     id: 1,
     name: 'Home',

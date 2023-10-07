@@ -23,11 +23,18 @@
       <hr class="text-center w-100" />
     </form>
 
-    <div class="row justify-content-start w-50">
-      <button *ngIf="displayBackButton" type="button" mat-button color="accent" class="col-2 mx-3" (click)="back()">
+    <div class="row justify-content-between w-100">
+      <button *ngIf="displayBackButton" type="button" mat-button color="accent" class="col-1 mx-3" (click)="back()">
         <div class="d-flex flex-row justify-content-center align-items-center">
           <mat-icon>chevron_left</mat-icon>
           <p class="m-0 mx-3">Back</p>
+        </div>
+      </button>
+
+      <button *ngIf="isEditMode" type="button" mat-raised-button color="accent" class="col-1 mx-3" (click)="dispatchUpdatePerson()">
+        <div class="d-flex flex-row justify-content-center align-items-center">
+          <mat-icon class="ms-3">save_as</mat-icon>
+          <p class="m-0 mx-3">Update</p>
         </div>
       </button>
     </div>

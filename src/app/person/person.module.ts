@@ -7,8 +7,10 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { BreadcrumbsModule } from '../shared/components/breadcrumbs/breadcrumbs.module';
+import { FeedbackMessageService } from '../shared/components/feedback-messages/services/feedback-message.service';
 import { PersonDetailsPageComponent } from './components/person-details-page/person-details-page.component';
 import { PersonEditionPageComponent } from './components/person-edition-page/person-edition-page.component';
 import { PersonFormComponent } from './components/person-form/person-form.component';
@@ -26,9 +28,10 @@ import { PersonService } from './services/person.service';
     MatDatepickerModule,
     MatIconModule,
     MatInputModule,
+    MatSnackBarModule,
     PersonRoutingModule,
     ReactiveFormsModule,
   ],
-  providers: [PersonService],
+  providers: [PersonService, FeedbackMessageService],
 })
 export class PersonModule {}

@@ -30,6 +30,15 @@ module.exports = function (config) {
       reporters: [{ type: 'html' }, { type: 'text-summary' }, { type: 'lcovonly' }],
     },
     reporters: ['progress', 'kjhtml'],
+    emitWarning: true,
+    check: {
+      global: {
+        statements: 90,
+        branches: 90,
+        functions: 90,
+        lines: 90
+      }
+    },
     browsers: ['Chrome'],
     restartOnFileChange: true,
     colors: true,

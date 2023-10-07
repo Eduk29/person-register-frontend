@@ -37,4 +37,11 @@ export class PersonService {
 
     return this.httpClient.get<IPaginatedResponse<IPerson>>(endpointUrl);
   }
+
+  public updatePerson(personId: number, person: IPerson): Observable<IPaginatedResponse<IPerson>> {
+    const endpointBasePath = environment.personsEndpoints.listAll;
+    const endpointUrl = `${endpointBasePath}/${personId}/update`;
+
+    return this.httpClient.put<IPaginatedResponse<IPerson>>(endpointUrl, person);
+  }
 }

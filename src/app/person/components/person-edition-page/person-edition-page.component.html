@@ -4,4 +4,12 @@
       <edv-breadcrumbs [breadcrumbsList]="editBreadcrumbs"></edv-breadcrumbs>
     </div>
   </div>
+  <div class="row my-3">
+    <edv-person-form
+      (updatePersonEvent)="updatePerson($event)"
+      [person]="person"
+      title="Person Details"
+      [displayBackButton]="true"
+      formMode="edit"></edv-person-form>
+  </div>
 </div>
