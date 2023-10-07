@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
 import { IPerson } from '../../models/person.model';
@@ -13,6 +13,8 @@ export class PersonFormComponent implements OnChanges {
   @Input() formMode: 'edit' | 'detail' = 'detail';
   @Input() person?: IPerson;
   @Input() title?: string;
+
+  @Output() updatePersonEvent: EventEmitter<IPerson> = new EventEmitter<IPerson>();
 
   public personForm!: FormGroup;
 
@@ -39,17 +41,33 @@ export class PersonFormComponent implements OnChanges {
     history.back();
   }
 
-  private createForm(): FormGroup {
-    return new FormGroup({
-      age: new FormControl<number | undefined>(undefined),
-      birthday: new FormControl<string | undefined>(undefined),
-      name: new FormControl<string | undefined>(undefined),
-    });
+  public dispatchUpdatePerson(): void {
+    const personToUpdate = this.extractPersonFromForm();
+    this.updatePersonEvent.emit(personToUpdate);
   }
 
   private assignPersonToForm(person: IPerson): void {
     this.personForm.get('age')?.setValue(person.age);
     this.personForm.get('birthday')?.setValue(person.birthday);
     this.personForm.get('name')?.setValue(person.name);
+  }
+
+  private extractPersonFromForm(): IPerson {
+    const newPerson: IPerson = {} as IPerson;
+
+    newPerson.age = this.personForm.get('age')?.value;
+    newPerson.birthday = this.personForm.get('birthday')?.value;
+    newPerson.name = this.personForm.get('name')?.value;
+    newPerson.id = this.person?.id as number;
+
+    return newPerson;
+  }
+
+  private createForm(): FormGroup {
+    return new FormGroup({
+      age: new FormControl<number | undefined>(undefined),
+      birthday: new FormControl<string | undefined>(undefined),
+      name: new FormControl<string | undefined>(undefined),
+    });
   }
 }
