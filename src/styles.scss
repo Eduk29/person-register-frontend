@@ -15,4 +15,9 @@ body {
     --mdc-snackbar-container-color: #c62828;
     --mdc-snackbar-supporting-text-color: #ffffff;
   }
+
+  &.success-snackbar {
+    --mdc-snackbar-container-color: green;
+    --mdc-snackbar-supporting-text-color: #ffffff;
+  }
 }

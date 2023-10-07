@@ -26,4 +26,21 @@ export class FeedbackMessageService {
       verticalPosition: 'top',
     });
   }
+
+  public displayAPISuccessFeedbackMessage(message?: string): void {
+    const apiSuccess: IFeedbackMessage = {
+      displayCloseButton: false,
+      displayIcon: true,
+      iconName: 'check',
+      message: message || 'Sucess',
+    };
+
+    this.snackbar.openFromComponent(FeedbackMessagesComponent, {
+      data: apiSuccess,
+      duration: 5000,
+      horizontalPosition: 'right',
+      panelClass: 'success-snackbar',
+      verticalPosition: 'top',
+    });
+  }
 }

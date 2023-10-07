@@ -13,8 +13,7 @@ import { SearchModeType } from '../../types/search-mode.type';
   encapsulation: ViewEncapsulation.None,
 })
 export class SearchInputComponent {
-  @Output()
-  searchEvent = new EventEmitter<ISearchFilter>();
+  @Output() searchEvent = new EventEmitter<ISearchFilter>();
 
   public searchForm!: FormGroup;
   public searchModeOptionList: ISystemValue<SearchModeType>[] = searchModeOptionsConfiguration;
