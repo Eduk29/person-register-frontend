@@ -1,0 +1,35 @@
+<mat-card *ngIf="!!person" class="p-4">
+  <h2 class="m-0 p-0" *ngIf="!!title">{{ title }}</h2>
+  <hr class="w-20 my-2" />
+  <div class="w-100 mt-2">
+    <form [formGroup]="personForm" class="row my-2">
+      <mat-form-field appearance="outline" class="col-4">
+        <mat-label>Name</mat-label>
+        <input matInput [readonly]="isDetailMode" formControlName="name" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="col-4">
+        <mat-label>Age</mat-label>
+        <input matInput [readonly]="isDetailMode" formControlName="age" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="col-4">
+        <mat-label>Birthday</mat-label>
+        <input matInput [readonly]="isDetailMode" [matDatepicker]="picker" formControlName="birthday" />
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker [disabled]="isDetailMode"></mat-datepicker>
+      </mat-form-field>
+
+      <hr class="text-center w-100" />
+    </form>
+
+    <div class="row justify-content-start w-50">
+      <button *ngIf="displayBackButton" type="button" mat-button color="accent" class="col-2 mx-3" (click)="back()">
+        <div class="d-flex flex-row justify-content-center align-items-center">
+          <mat-icon>chevron_left</mat-icon>
+          <p class="m-0 mx-3">Back</p>
+        </div>
+      </button>
+    </div>
+  </div>
+</mat-card>

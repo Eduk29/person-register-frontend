@@ -1,0 +1,40 @@
+@use '@angular/material' as mat;
+@use './palette.theme' as palette;
+@use './typography.theme' as typography;
+@use 'sass:map';
+
+// Plus imports for other components in your app
+
+// Mat core declaration
+@include mat.core();
+
+// Base Colors
+$primary: mat.define-palette(palette.$glaucous, 500, 200, 700);
+$accent: mat.define-palette(palette.$marian-blue, 600, 800, 300);
+
+// State Colors
+$success: mat.define-palette(palette.$spring-green, 500, 200, 700);
+$warning: mat.define-palette(palette.$mustard, 500, 300, 800);
+$error: mat.define-palette(palette.$red, 600, 300, 800);
+
+// Greyscale
+$greyscale: mat.define-palette(palette.$greyscale-palette, 500, 300, 700);
+
+$theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $primary,
+      accent: $accent,
+      warn: $error,
+      success: $success,
+      warning: $warning,
+      greyscale: $greyscale,
+    ),
+    typography: typography.$theme-typography,
+    density: 0,
+  )
+);
+
+// Emit theme-dependent styles for common features used across multiple components.
+@include mat.all-component-themes($theme);
+@include mat.typography-hierarchy(typography.$theme-typography);

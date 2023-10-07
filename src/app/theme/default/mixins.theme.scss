@@ -1,0 +1,160 @@
+@import './variables.theme';
+
+@mixin primary($hue, $mode) {
+  @if ($hue == 'base' and $mode == 'background') {
+    background-color: $primary-base;
+    color: $primary-base-contrast;
+  }
+  @if ($hue == 'base' and $mode == 'text') {
+    color: $primary-base;
+  }
+  @if ($hue == 'lighter' and $mode == 'background') {
+    background-color: $primary-lighter;
+    color: $primary-lighter-contrast;
+  }
+  @if ($hue == 'lighter' and $mode == 'text') {
+    color: $primary-lighter;
+  }
+  @if ($hue == 'darker' and $mode == 'background') {
+    background-color: $primary-darker;
+    color: $primary-darker-contrast;
+  }
+  @if ($hue == 'darker' and $mode == 'text') {
+    color: $primary-darker;
+  }
+}
+
+@mixin accent($hue, $mode) {
+  @if ($hue == 'base' and $mode == 'background') {
+    background-color: $accent-base;
+    color: $accent-base-contrast;
+  }
+  @if ($hue == 'base' and $mode == 'text') {
+    color: $accent-base;
+  }
+  @if ($hue == 'lighter' and $mode == 'background') {
+    background-color: $accent-lighter;
+    color: $accent-lighter-contrast;
+  }
+  @if ($hue == 'lighter' and $mode == 'text') {
+    color: $accent-lighter;
+  }
+  @if ($hue == 'darker' and $mode == 'background') {
+    background-color: $accent-darker;
+    color: $accent-darker-contrast;
+  }
+  @if ($hue == 'darker' and $mode == 'text') {
+    color: $accent-darker;
+  }
+}
+
+@mixin warning($hue, $mode) {
+  @if ($hue == 'base' and $mode == 'background') {
+    background-color: $warning-base;
+    color: $warning-base-contrast;
+  }
+  @if ($hue == 'base' and $mode == 'text') {
+    color: $warning-base;
+  }
+  @if ($hue == 'lighter' and $mode == 'background') {
+    background-color: $warning-lighter;
+    color: $warning-lighter-contrast;
+  }
+  @if ($hue == 'lighter' and $mode == 'text') {
+    color: $warning-lighter;
+  }
+  @if ($hue == 'darker' and $mode == 'background') {
+    background-color: $warning-darker;
+    color: $warning-darker-contrast;
+  }
+  @if ($hue == 'darker' and $mode == 'text') {
+    color: $warning-darker;
+  }
+}
+
+@mixin error($hue, $mode) {
+  @if ($hue == 'base' and $mode == 'background') {
+    background-color: $error-base;
+    color: $error-base-contrast;
+  }
+  @if ($hue == 'base' and $mode == 'text') {
+    color: $error-base;
+  }
+  @if ($hue == 'lighter' and $mode == 'background') {
+    background-color: $error-lighter;
+    color: $error-lighter-contrast;
+  }
+  @if ($hue == 'lighter' and $mode == 'text') {
+    color: $error-lighter;
+  }
+  @if ($hue == 'darker' and $mode == 'background') {
+    background-color: $error-darker;
+    color: $error-darker-contrast;
+  }
+  @if ($hue == 'darker' and $mode == 'text') {
+    color: $error-darker;
+  }
+}
+
+@mixin success($hue, $mode) {
+  @if ($hue == 'base' and $mode == 'background') {
+    background-color: $success-base;
+    color: $success-base-contrast;
+  }
+  @if ($hue == 'base' and $mode == 'text') {
+    color: $success-base;
+  }
+  @if ($hue == 'lighter' and $mode == 'background') {
+    background-color: $success-lighter;
+    color: $success-lighter-contrast;
+  }
+  @if ($hue == 'lighter' and $mode == 'text') {
+    color: $success-lighter;
+  }
+  @if ($hue == 'darker' and $mode == 'background') {
+    background-color: $success-darker;
+    color: $success-darker-contrast;
+  }
+  @if ($hue == 'darker' and $mode == 'text') {
+    color: $success-darker;
+  }
+}
+
+@mixin greyscale($hue, $mode) {
+  @if ($hue == 'lighter' and $mode == 'background') {
+    background-color: $greyscale-lighter;
+    color: $greyscale-lighter-contrast;
+  }
+  @if ($hue == 'light' and $mode == 'background') {
+    background-color: $greyscale-light;
+    color: $greyscale-light-contrast;
+  }
+  @if ($hue == 'base' and $mode == 'background') {
+    background-color: $greyscale-base;
+    color: $greyscale-base-contrast;
+  }
+  @if ($hue == 'dark' and $mode == 'background') {
+    background-color: $greyscale-dark;
+    color: $greyscale-dark-contrast;
+  }
+  @if ($hue == 'darker' and $mode == 'background') {
+    background-color: $greyscale-darker;
+    color: $greyscale-darker-contrast;
+  }
+
+  @if ($hue == 'lighter' and $mode == 'text') {
+    color: $greyscale-lighter;
+  }
+  @if ($hue == 'light' and $mode == 'text') {
+    color: $greyscale-light;
+  }
+  @if ($hue == 'base' and $mode == 'text') {
+    color: $greyscale-base;
+  }
+  @if ($hue == 'dark' and $mode == 'text') {
+    color: $greyscale-dark;
+  }
+  @if ($hue == 'darker' and $mode == 'text') {
+    color: $greyscale-darker;
+  }
+}

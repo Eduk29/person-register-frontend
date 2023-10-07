@@ -1,12 +1,14 @@
 import { TestBed } from '@angular/core/testing';
+
 import { AppComponent } from './app.component';
+import { RouterModule } from '@angular/router';
+import { NavbarModule } from './shared/components/navbar/navbar.module';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        AppComponent
-      ],
+      declarations: [AppComponent],
+      imports: [RouterModule, NavbarModule],
     }).compileComponents();
   });
 
@@ -22,10 +24,10 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('person-register-frontend');
   });
 
-  it('should render title', () => {
+  it('should have a navbar', () => {
     const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('person-register-frontend app is running!');
+    const dom = fixture.nativeElement as HTMLElement;
+
+    expect(dom.getElementsByTagName('edv-navbar')).toBeTruthy();
   });
 });
