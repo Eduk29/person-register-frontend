@@ -11,6 +11,7 @@ import { IPerson } from '../../models/person.model';
 export class PersonFormComponent implements OnChanges {
   @Input() displayBackButton: boolean = true;
   @Input() formMode: 'edit' | 'detail' = 'detail';
+  @Input() isLoading?: boolean;
   @Input() person?: IPerson;
   @Input() title?: string;
 

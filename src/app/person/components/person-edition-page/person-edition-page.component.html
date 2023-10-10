@@ -5,11 +5,15 @@
     </div>
   </div>
   <div class="row my-3">
+    <edv-loader [isLoading]="isLoading" displayMode="card"></edv-loader>
     <edv-person-form
+      *ngIf="!isLoading"
       (updatePersonEvent)="updatePerson($event)"
       [person]="person"
+      [isLoading]="isUpdating"
       title="Person Details"
       [displayBackButton]="true"
-      formMode="edit"></edv-person-form>
+      formMode="edit">
+    </edv-person-form>
   </div>
 </div>

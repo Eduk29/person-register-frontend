@@ -1,11 +1,12 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SimpleChange, SimpleChanges } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
 import { PageEvent } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 
 import { PERSON_LIST_MOCK } from '../../mocks/person-list.mock';
 import { IPaginationParameters } from '../../models/pagination-parameters.model';
+import { LoaderModule } from '../loader/loader.module';
 import { NoResultsModule } from '../no-results/no-results.module';
 import { DataTableComponent } from './data-table.component';
 
@@ -16,7 +17,7 @@ describe('DataTableComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [DataTableComponent],
-      imports: [MatCardModule, MatTableModule, NoResultsModule],
+      imports: [LoaderModule, MatCardModule, MatTableModule, NoResultsModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(DataTableComponent);

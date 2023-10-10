@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { LoaderModule } from './../../../shared/components/loader/loader.module';
 import { PersonFormComponent } from './person-form.component';
 
 describe('PersonFormComponent', () => {
@@ -9,6 +10,7 @@ describe('PersonFormComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [PersonFormComponent],
+      imports: [LoaderModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(PersonFormComponent);

@@ -17,6 +17,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class PersonEditionPageComponent implements OnDestroy {
   public editBreadcrumbs: IBreadcrumbItem[] = PersonEditionBreadcrumbsConfiguration;
+  public isLoading: boolean = false;
+  public isUpdating: boolean = false;
   public person?: IPerson;
 
   private destroySubject$: Subject<void> = new Subject();
@@ -47,7 +49,7 @@ export class PersonEditionPageComponent implements OnDestroy {
   }
 
   private getPersonById(personId: number): void {
-    console.log(personId);
+    this.isLoading = true;
     this.personService
       .getPersonById(personId)
       .pipe(
@@ -58,7 +60,17 @@ export class PersonEditionPageComponent implements OnDestroy {
         }),
         takeUntil(this.destroySubject$)
       )
-      .subscribe();
+      .subscribe({
+        error: (error: HttpErrorResponse) => {
+          if (error.status === 0) {
+            this.displayErrorFeedbackMessage();
+            this.isLoading = false;
+          }
+        },
+        complete: () => {
+          this.isLoading = false;
+        },
+      });
   }
 
   private getPersonIdFromRouteParam(): void {
@@ -73,21 +85,21 @@ export class PersonEditionPageComponent implements OnDestroy {
   }
 
   private updatePersonById(person: IPerson): void {
+    this.isUpdating = true;
     const personId = this.person?.id as number;
     this.personService
       .updatePerson(personId, person)
-      .pipe(
-        tap(response => console.log(response)),
-        takeUntil(this.destroySubject$)
-      )
+      .pipe(takeUntil(this.destroySubject$))
       .subscribe({
         error: (error: HttpErrorResponse) => {
           if (error.status === 0) {
             this.displayErrorFeedbackMessage();
+            this.isUpdating = false;
           }
         },
         complete: () => {
           this.displaySuccessFeedbackMessage();
+          this.isUpdating = false;
         },
       });
   }

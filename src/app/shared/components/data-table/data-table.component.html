@@ -1,5 +1,7 @@
 <mat-card>
-  <mat-card-content *ngIf="displayTable; else noResults">
+  <edv-loader [isLoading]="isLoading" displayMode="card"></edv-loader>
+
+  <mat-card-content *ngIf="displayTable && !isLoading; else noResults">
     <table mat-table [dataSource]="dataSource">
       <!-- Id Column -->
       <ng-container matColumnDef="id">
@@ -49,5 +51,5 @@
 </mat-card>
 
 <ng-template #noResults>
-  <edv-no-results></edv-no-results>
+  <edv-no-results *ngIf="!isLoading"></edv-no-results>
 </ng-template>

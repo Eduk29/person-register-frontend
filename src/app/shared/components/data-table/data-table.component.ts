@@ -10,11 +10,9 @@ import { PageEvent } from '@angular/material/paginator';
   styleUrls: ['./data-table.component.scss'],
 })
 export class DataTableComponent implements OnChanges {
-  @Input()
-  public personList?: IPerson[];
-
-  @Input()
-  public paginationParameters?: IPaginationParameters;
+  @Input() public isLoading?: boolean;
+  @Input() public paginationParameters?: IPaginationParameters;
+  @Input() public personList?: IPerson[];
 
   @Output()
   public paginationEvent: EventEmitter<PageEvent> = new EventEmitter<PageEvent>();
