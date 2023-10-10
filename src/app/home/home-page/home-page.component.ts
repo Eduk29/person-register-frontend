@@ -20,6 +20,7 @@ import { ITableAction } from './../../shared/models/table-action.model';
   styleUrls: ['./home-page.component.scss'],
 })
 export class HomePageComponent implements OnDestroy, OnInit {
+  public isLoading: boolean = false;
   public paginationParameters: IPaginationParameters = {};
   public personList!: IPerson[];
 
@@ -89,11 +90,13 @@ export class HomePageComponent implements OnDestroy, OnInit {
   }
 
   private listAllPersons(): void {
+    this.isLoading = true;
     this.personService
       .getAll(this.paginationParameters)
       .pipe(
         tap((response: IPaginatedResponse<IPerson>) => {
           this.constructPaginatedResponse(response);
+          this.isLoading = false;
         }),
         takeUntil(this.onDestroy$)
       )
@@ -101,17 +104,20 @@ export class HomePageComponent implements OnDestroy, OnInit {
         error: (error: HttpErrorResponse) => {
           if (error.status === 0) {
             this.displayFeedbackMessage();
+            this.isLoading = false;
           }
         },
       });
   }
 
   private listByParameters(searchParameters: ISearchFilter): void {
+    this.isLoading = true;
     this.personService
       .getByParameter(this.paginationParameters, searchParameters)
       .pipe(
         tap((response: IPaginatedResponse<IPerson>) => {
           this.constructPaginatedResponse(response);
+          this.isLoading = false;
         }),
         takeUntil(this.onDestroy$)
       )
@@ -119,6 +125,7 @@ export class HomePageComponent implements OnDestroy, OnInit {
         error: (error: HttpErrorResponse) => {
           if (error.status === 0) {
             this.displayFeedbackMessage();
+            this.isLoading = false;
           }
         },
       });

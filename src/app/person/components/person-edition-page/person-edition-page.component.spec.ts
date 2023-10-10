@@ -7,6 +7,7 @@ import { PersonService } from '../../services/person.service';
 import { PersonFormComponent } from '../person-form/person-form.component';
 import { BreadcrumbsModule } from './../../../shared/components/breadcrumbs/breadcrumbs.module';
 import { FeedbackMessageService } from './../../../shared/components/feedback-messages/services/feedback-message.service';
+import { LoaderModule } from './../../../shared/components/loader/loader.module';
 import { PersonEditionPageComponent } from './person-edition-page.component';
 
 describe('PersonEditionPageComponent', () => {
@@ -16,7 +17,7 @@ describe('PersonEditionPageComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [PersonEditionPageComponent, PersonFormComponent],
-      imports: [BreadcrumbsModule, HttpClientModule, MatSnackBarModule, RouterTestingModule],
+      imports: [BreadcrumbsModule, HttpClientModule, LoaderModule, MatSnackBarModule, RouterTestingModule],
       providers: [FeedbackMessageService, PersonService],
     }).compileComponents();
 
