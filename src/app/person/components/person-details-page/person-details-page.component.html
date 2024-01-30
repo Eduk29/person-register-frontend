@@ -6,11 +6,7 @@
   </div>
   <div class="row my-3">
     <edv-loader [isLoading]="isLoading" displayMode="card"></edv-loader>
-    <edv-person-form
-      *ngIf="!isLoading"
-      [person]="person"
-      title="Person Details"
-      [displayBackButton]="true"
-      formMode="detail"></edv-person-form>
+    <edv-person-form *ngIf="!isLoading" [person]="person" title="Person Details" [displayBackButton]="true" formMode="detail">
+    </edv-person-form>
   </div>
 </div>
