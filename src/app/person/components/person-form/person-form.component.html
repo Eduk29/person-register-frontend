@@ -1,4 +1,4 @@
-<mat-card *ngIf="!!person" class="p-4">
+<mat-card *ngIf="!!person || !!isNewMode" class="p-4">
   <h2 class="m-0 p-0" *ngIf="!!title">{{ title }}</h2>
   <hr class="w-20 my-2" />
   <div class="w-100 mt-2">
@@ -23,7 +23,7 @@
       <hr class="text-center w-100" />
     </form>
 
-    <div class="row justify-content-between w-100">
+    <div class="row justify-content-between align-items-center w-100">
       <button *ngIf="displayBackButton" type="button" mat-button color="accent" class="col-1 mx-3" (click)="back()">
         <div class="d-flex flex-row justify-content-center align-items-center">
           <mat-icon>chevron_left</mat-icon>
@@ -31,11 +31,17 @@
         </div>
       </button>
 
-      <button *ngIf="isEditMode" type="button" mat-raised-button color="accent" class="col-1 mx-3" (click)="dispatchUpdatePerson()">
+      <button
+        *ngIf="isEditMode || isNewMode"
+        type="button"
+        mat-raised-button
+        color="accent"
+        class="submit-button col-2"
+        (click)="dispatchFormsubmitAction()">
         <div class="d-flex flex-row justify-content-center align-items-center">
           <edv-loader [isLoading]="isLoading" displayMode="default"></edv-loader>
-          <mat-icon *ngIf="!isLoading" class="ms-3">save_as</mat-icon>
-          <p class="m-0 mx-3">Update</p>
+          <mat-icon *ngIf="!isLoading" class="ms-3">{{ submitIconLabel }}</mat-icon>
+          <p class="m-0 mx-3">{{ submitLabel }}</p>
         </div>
       </button>
     </div>
