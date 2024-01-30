@@ -1,6 +1,9 @@
 <main id="main-area" class="container my-4">
-  <section id="search-input-area" class="my-2">
-    <edv-search-input (searchEvent)="search($event)"></edv-search-input>
+  <section id="search-input-area" class="d-flex flex-row align-items-center w-100 my-2">
+    <edv-search-input (searchEvent)="search($event)" class="w-90"></edv-search-input>
+    <div class="ms-2 w-10">
+      <button mat-raised-button type="button" (click)="redirectToCreatePage()" color="primary">Add a Person</button>
+    </div>
   </section>
   <section id="data-table-area" class="my-3">
     <edv-data-table
