@@ -5,5 +5,6 @@ export const environment = {
   personsEndpoints: {
     listAll: `${localBasePath}/persons`,
     listByParameter: `${localBasePath}/persons/search`,
+    newRegister: `${localBasePath}/persons/new`,
   },
 };
