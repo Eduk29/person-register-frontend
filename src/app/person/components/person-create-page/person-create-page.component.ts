@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
@@ -15,7 +15,7 @@ import { IPaginatedResponse } from './../../../shared/models/paginated-response.
   templateUrl: './person-create-page.component.html',
   styleUrls: ['./person-create-page.component.scss'],
 })
-export class PersonCreatePageComponent {
+export class PersonCreatePageComponent implements OnDestroy {
   public isLoading: boolean = false;
   public isSaving: boolean = false;
   public newPersonBreadcrumbs: IBreadcrumbItem[] = personNewBreadcrumbs;
@@ -28,6 +28,11 @@ export class PersonCreatePageComponent {
     private readonly personService: PersonService,
     private readonly router: Router
   ) {}
+
+  ngOnDestroy(): void {
+    this.destroySubject$.next();
+    this.destroySubject$.unsubscribe();
+  }
 
   public dispatchRegisterPersonAaction(newPerson: IPerson): void {
     this.registerPerson(newPerson);
