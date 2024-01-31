@@ -1,5 +1,6 @@
 import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -8,10 +9,13 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of, throwError } from 'rxjs';
 import { APP_BASE_ROUTES } from 'src/app/app.routes';
+import { DeleteDialogComponent } from 'src/app/shared/components/delete-dialog/delete-dialog.component';
+import { DeleteDialogModule } from 'src/app/shared/components/delete-dialog/delete-dialog.module';
 import { FeedbackMessagesComponent } from 'src/app/shared/components/feedback-messages/feedback-messages.component';
 import { FeedbackMessageService } from 'src/app/shared/components/feedback-messages/services/feedback-message.service';
 import { TableActionsService } from 'src/app/shared/components/table-actions/services/table-actions.service';
 import { TableActionTypesEnum } from 'src/app/shared/enums/table-action-type.enum';
+import { PERSON_LIST_MOCK } from 'src/app/shared/mocks/person-list.mock';
 import { ITableAction } from 'src/app/shared/models/table-action.model';
 
 import { PersonService } from './../../person/services/person.service';
@@ -28,6 +32,7 @@ describe('HomePageComponent', () => {
   let personService: PersonService;
   let tableActionService: TableActionsService;
   let router: Router;
+  let dialog: MatDialog;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -36,6 +41,8 @@ describe('HomePageComponent', () => {
         BrowserAnimationsModule,
         DataTableModule,
         HttpClientModule,
+        DeleteDialogModule,
+        MatDialogModule,
         MatIconModule,
         MatSnackBarModule,
         RouterTestingModule.withRoutes(APP_BASE_ROUTES),
@@ -50,6 +57,7 @@ describe('HomePageComponent', () => {
     personService = TestBed.inject(PersonService);
     router = TestBed.get(Router);
     tableActionService = TestBed.inject(TableActionsService);
+    dialog = TestBed.inject(MatDialog);
     fixture.detectChanges();
   });
 
@@ -228,7 +236,7 @@ describe('HomePageComponent', () => {
     };
     spyOn<any>(HomePageComponent.prototype, 'catchTableActionEvent').and.callFake(() => {});
     spyOn<any>(component, 'redirectToDetailsPage').and.callFake(() => {});
-    new HomePageComponent(feedbackMessagesService, personService, router, tableActionService);
+    new HomePageComponent(dialog, feedbackMessagesService, personService, router, tableActionService);
     tableActionService.dispatchTableAction(fakeAction);
 
     expect(HomePageComponent.prototype['catchTableActionEvent']).toHaveBeenCalled();
@@ -241,10 +249,24 @@ describe('HomePageComponent', () => {
     };
     spyOn<any>(HomePageComponent.prototype, 'catchTableActionEvent').and.callFake(() => {});
     spyOn<any>(component, 'redirectToEditionPage').and.callFake(() => {});
-    new HomePageComponent(feedbackMessagesService, personService, router, tableActionService);
+    new HomePageComponent(dialog, feedbackMessagesService, personService, router, tableActionService);
     tableActionService.dispatchTableAction(fakeAction);
 
     expect(HomePageComponent.prototype['catchTableActionEvent']).toHaveBeenCalled();
+  });
+
+  it('catchTableActionEvent should catch table action event when delete table action is dispatched', () => {
+    const fakeAction: ITableAction = {
+      dataId: 999,
+      actionType: TableActionTypesEnum.DELETE,
+    };
+    spyOn<any>(HomePageComponent.prototype, 'catchTableActionEvent').and.callFake(() => {});
+    spyOn<any>(component, 'executeDeleteAction').and.callFake(() => {});
+    new HomePageComponent(dialog, feedbackMessagesService, personService, router, tableActionService);
+
+    tableActionService.dispatchTableAction(fakeAction);
+
+    expect(component['executeDeleteAction']).toHaveBeenCalled();
   });
 
   it('redirectToDetailPage should call navigate from router when table action is dispatched', () => {
@@ -271,5 +293,72 @@ describe('HomePageComponent', () => {
     component['redirectToEditionPage'](1);
 
     expect(component['router'].navigate).toHaveBeenCalledWith(['..', 'person', 1, 'edit']);
+  });
+
+  it('redirectToCreatePage should call navigate to new register page', () => {
+    spyOn<any>(component['router'], 'navigate').and.callFake(() => {});
+
+    component['redirectToCreatePage']();
+
+    expect(component['router'].navigate).toHaveBeenCalledWith(['..', 'person', 'new']);
+  });
+
+  it('executeDeleteAction should open dialog', () => {
+    spyOn<any>(dialog, 'open').and.callThrough();
+    component.personList = PERSON_LIST_MOCK;
+
+    component['executeDeleteAction'](1);
+
+    expect(dialog.open).toHaveBeenCalled();
+  });
+
+  it('executeDeleteAction should open dialog with data', () => {
+    spyOn<any>(dialog, 'open').and.callThrough();
+    component.personList = PERSON_LIST_MOCK;
+    const personToRemove = PERSON_LIST_MOCK[0];
+    const fakeData = { data: { ...personToRemove } };
+
+    component['executeDeleteAction'](1);
+
+    expect(dialog.open).toHaveBeenCalledWith(DeleteDialogComponent, fakeData);
+  });
+
+  it('executeDeleteAction should call delete endpoint when delete action is dispatched', () => {
+    spyOn(dialog, 'open').and.returnValue({
+      afterClosed: () => of(true),
+    } as MatDialogRef<typeof component>);
+
+    spyOn<any>(component, 'deleteById').and.callFake(() => {});
+    component.personList = PERSON_LIST_MOCK;
+
+    component['executeDeleteAction'](1);
+
+    expect(component['deleteById']).toHaveBeenCalled();
+  });
+
+  it('deleteById should call deleteById method in personService', () => {
+    spyOn(personService, 'deteleById').and.returnValue(of(null));
+
+    component['deleteById'](1);
+
+    expect(personService.deteleById).toHaveBeenCalled();
+  });
+
+  it('deleteById should call deleteById method in personService', () => {
+    spyOn(personService, 'deteleById').and.returnValue(of(null));
+    spyOn<any>(component, 'listAllPersons').and.callFake(() => {});
+
+    component['deleteById'](1);
+
+    expect(component['listAllPersons']).toHaveBeenCalled();
+  });
+
+  it('deleteById should call deleteById method in personService', () => {
+    spyOn(personService, 'deteleById').and.returnValue(throwError(() => new HttpErrorResponse({ status: 0 })));
+    spyOn<any>(component, 'displayFeedbackMessage').and.callFake(() => {});
+
+    component['deleteById'](1);
+
+    expect(component['displayFeedbackMessage']).toHaveBeenCalled();
   });
 });
