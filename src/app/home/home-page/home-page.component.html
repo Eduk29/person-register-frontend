@@ -1,6 +1,17 @@
 <main id="main-area" class="container my-4">
-  <section id="search-input-area" class="my-2">
-    <edv-search-input (searchEvent)="search($event)"></edv-search-input>
+  <div id="register-person-button" class="d-flex flex-row justify-content-end w-100 ms-2">
+    <button
+      mat-fab
+      type="button"
+      aria-label="Button to redirect to new page to register new person"
+      matTooltip="Register New Person"
+      (click)="redirectToCreatePage()"
+      color="accent">
+      <mat-icon>person_add</mat-icon>
+    </button>
+  </div>
+  <section id="search-input-area" class="d-flex flex-row align-items-center w-100 my-2">
+    <edv-search-input (searchEvent)="search($event)" class="w-100"></edv-search-input>
   </section>
   <section id="data-table-area" class="my-3">
     <edv-data-table

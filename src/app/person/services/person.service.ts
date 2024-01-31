@@ -38,6 +38,12 @@ export class PersonService {
     return this.httpClient.get<IPaginatedResponse<IPerson>>(endpointUrl);
   }
 
+  public registerPerson(person: IPerson): Observable<IPaginatedResponse<IPerson>> {
+    const endpointBasePath = environment.personsEndpoints.newRegister;
+
+    return this.httpClient.post<IPaginatedResponse<IPerson>>(endpointBasePath, person);
+  }
+
   public updatePerson(personId: number, person: IPerson): Observable<IPaginatedResponse<IPerson>> {
     const endpointBasePath = environment.personsEndpoints.listAll;
     const endpointUrl = `${endpointBasePath}/${personId}/update`;

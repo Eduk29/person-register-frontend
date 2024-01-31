@@ -50,6 +50,10 @@ export class HomePageComponent implements OnDestroy, OnInit {
     this.listAllPersons();
   }
 
+  public redirectToCreatePage(): void {
+    this.router.navigate(['..', 'person', 'new']);
+  }
+
   public search(filter: ISearchFilter): void {
     this.listByParameters(filter);
   }

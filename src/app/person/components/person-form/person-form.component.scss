@@ -2,3 +2,9 @@
   height: 24px !important;
   width: 24px !important;
 }
+
+.mdc-button {
+  &.submit-button {
+    height: 48px !important;
+  }
+}

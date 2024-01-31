@@ -18,9 +18,10 @@ import { PersonEditionPageComponent } from './components/person-edition-page/per
 import { PersonFormComponent } from './components/person-form/person-form.component';
 import { PersonRoutingModule } from './person-routing.module';
 import { PersonService } from './services/person.service';
+import { PersonCreatePageComponent } from './components/person-create-page/person-create-page.component';
 
 @NgModule({
-  declarations: [PersonDetailsPageComponent, PersonEditionPageComponent, PersonFormComponent],
+  declarations: [PersonDetailsPageComponent, PersonEditionPageComponent, PersonFormComponent, PersonCreatePageComponent],
   imports: [
     BreadcrumbsModule,
     CommonModule,

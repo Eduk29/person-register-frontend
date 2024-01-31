@@ -1,6 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { PersonModule } from '../person/person.module';
 import { DataTableModule } from '../shared/components/data-table/data-table.module';
@@ -17,7 +20,10 @@ import { HomeRoutingModule } from './home-routing.module';
     DataTableModule,
     FeedbackMessagesModule,
     HomeRoutingModule,
+    MatButtonModule,
+    MatIconModule,
     MatSnackBarModule,
+    MatTooltipModule,
     PersonModule,
     SearchInputModule,
     TableActionsModule,
