@@ -1,14 +1,16 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { Subject, takeUntil, tap } from 'rxjs';
-import { TableActionTypesEnum } from 'src/app/shared/enums/table-action-type.enum';
+import { DeleteDialogComponent } from 'src/app/shared/components/delete-dialog/delete-dialog.component';
 
 import { IPerson } from './../../person/models/person.model';
 import { PersonService } from './../../person/services/person.service';
 import { FeedbackMessageService } from './../../shared/components/feedback-messages/services/feedback-message.service';
 import { TableActionsService } from './../../shared/components/table-actions/services/table-actions.service';
+import { TableActionTypesEnum } from './../../shared/enums/table-action-type.enum';
 import { IPaginatedResponse } from './../../shared/models/paginated-response.model';
 import { IPaginationParameters } from './../../shared/models/pagination-parameters.model';
 import { ISearchFilter } from './../../shared/models/search-filter.model';
@@ -27,6 +29,7 @@ export class HomePageComponent implements OnDestroy, OnInit {
   private onDestroy$: Subject<void> = new Subject<void>();
 
   constructor(
+    private readonly deleteDialog: MatDialog,
     private readonly feedbackMessageService: FeedbackMessageService,
     private readonly personService: PersonService,
     private readonly router: Router,
@@ -69,6 +72,9 @@ export class HomePageComponent implements OnDestroy, OnInit {
         if (action.dataId && action.actionType === TableActionTypesEnum.EDIT) {
           this.redirectToEditionPage(action.dataId);
         }
+        if (action.dataId && action.actionType === TableActionTypesEnum.DELETE) {
+          this.executeDeleteAction(action.dataId);
+        }
       });
   }
 
@@ -91,6 +97,37 @@ export class HomePageComponent implements OnDestroy, OnInit {
 
   private displayFeedbackMessage(): void {
     this.feedbackMessageService.displayAPIErrorFeedbackMessage();
+  }
+
+  private executeDeleteAction(personId: number): void {
+    const personToDelete = this.personList.find((person: IPerson) => person.id === personId);
+    const dialogRef = this.deleteDialog.open(DeleteDialogComponent, {
+      data: { ...personToDelete },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && personToDelete) {
+        this.deleteById(personId);
+      }
+    });
+  }
+
+  private deleteById(personId: number): void {
+    this.isLoading = true;
+    this.personService
+      .deteleById(personId)
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe({
+        next: () => {
+          this.listAllPersons();
+        },
+        error: () => {
+          this.displayFeedbackMessage();
+        },
+        complete: () => {
+          this.isLoading = false;
+        },
+      });
   }
 
   private listAllPersons(): void {

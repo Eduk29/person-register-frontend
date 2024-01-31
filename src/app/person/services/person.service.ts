@@ -15,6 +15,13 @@ import ServicesUtils from './../../shared/utils/service.utils';
 export class PersonService {
   constructor(private readonly httpClient: HttpClient) {}
 
+  public deteleById(personId: number): Observable<null> {
+    const endpointBasePath = environment.personsEndpoints.listAll;
+    const endpointUrl = `${endpointBasePath}/${personId}/delete`;
+
+    return this.httpClient.delete<null>(endpointUrl);
+  }
+
   public getAll(paginationParameters: IPaginationParameters): Observable<IPaginatedResponse<IPerson>> {
     const endpointBasePath = environment.personsEndpoints.listAll;
     const requestParameters = ServicesUtils.constructRequestParameters(paginationParameters);
