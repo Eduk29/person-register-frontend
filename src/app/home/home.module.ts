@@ -7,6 +7,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { PersonModule } from '../person/person.module';
 import { DataTableModule } from '../shared/components/data-table/data-table.module';
+import { DeleteDialogModule } from '../shared/components/delete-dialog/delete-dialog.module';
 import { FeedbackMessagesModule } from '../shared/components/feedback-messages/feedback-messages.module';
 import { SearchInputModule } from '../shared/components/search-input/search-input.module';
 import { TableActionsModule } from '../shared/components/table-actions/table-actions.module';
@@ -18,6 +19,7 @@ import { HomeRoutingModule } from './home-routing.module';
   imports: [
     CommonModule,
     DataTableModule,
+    DeleteDialogModule,
     FeedbackMessagesModule,
     HomeRoutingModule,
     MatButtonModule,
