@@ -57,6 +57,11 @@ export class HomePageComponent implements OnDestroy, OnInit {
     this.router.navigate(['..', 'person', 'new']);
   }
 
+  public resetSearch(): void {
+    this.configurePagination();
+    this.listAllPersons();
+  }
+
   public search(filter: ISearchFilter): void {
     this.listByParameters(filter);
   }

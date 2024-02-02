@@ -11,7 +11,7 @@
     </button>
   </div>
   <section id="search-input-area" class="d-flex flex-row align-items-center w-100 my-2">
-    <edv-search-input (searchEvent)="search($event)" class="w-100"></edv-search-input>
+    <edv-search-input (searchEvent)="search($event)" (resetSearch)="resetSearch()" class="w-100"></edv-search-input>
   </section>
   <section id="data-table-area" class="my-3">
     <edv-data-table

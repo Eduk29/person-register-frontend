@@ -13,6 +13,7 @@ import { SearchModeType } from '../../types/search-mode.type';
   encapsulation: ViewEncapsulation.None,
 })
 export class SearchInputComponent {
+  @Output() resetSearch = new EventEmitter();
   @Output() searchEvent = new EventEmitter<ISearchFilter>();
 
   public searchForm!: FormGroup;
@@ -24,6 +25,16 @@ export class SearchInputComponent {
 
   public get disableButton(): boolean {
     return this.searchForm.get('searchMode')?.value === null || this.searchForm.get('searchQuery')?.value === null;
+  }
+
+  public get displayClearSearch(): boolean {
+    return this.searchForm.get('searchMode')?.value !== null || this.searchForm.get('searchQuery')?.value !== null;
+  }
+
+  public clearForm(): void {
+    this.searchForm.get('searchMode')?.reset();
+    this.searchForm.get('searchQuery')?.reset();
+    this.resetSearch.emit();
   }
 
   public search(): void {
