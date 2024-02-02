@@ -6,6 +6,7 @@
     "jasmine": true,
     "node": true
   },
+  "plugins": ["@typescript-eslint"],
   "overrides": [
     {
       "files": ["*.ts"],
