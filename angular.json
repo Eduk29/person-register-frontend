@@ -77,10 +77,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "person-register-frontend:build:production"
+              "buildTarget": "person-register-frontend:build:production"
             },
             "development": {
-              "browserTarget": "person-register-frontend:build:development"
+              "buildTarget": "person-register-frontend:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -88,7 +88,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "person-register-frontend:build"
+            "buildTarget": "person-register-frontend:build"
           }
         },
         "test": {
